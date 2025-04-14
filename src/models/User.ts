@@ -1,7 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
 
-interface IUser{
+export interface IUser{
+    handle: string,
     name : string,
     email : string,
     password : string
@@ -16,6 +17,13 @@ interface IUser{
     * El segundo parámetro son las opciones del Schema
 */
 const userSchema = new Schema({
+    handle: {
+        type: String,
+        required: true,
+        trim: true, //Elimina los espacios en blanco al inicio y al final
+        unique: true, //No se pueden repetir los usuarios
+        lowercase: true, //Convierte el texto a minúsculas
+    },
     name: {
         type: String,
         required: true,
@@ -26,6 +34,7 @@ const userSchema = new Schema({
         required: true,
         trim: true, //Elimina los espacios en blanco al inicio y al final
         unique: true, //No se pueden repetir los correos
+        lowercase: true, //Convierte el texto a minúsculas
     },
     password: {
         type: String,
