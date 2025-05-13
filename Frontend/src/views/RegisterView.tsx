@@ -14,7 +14,7 @@ export default function RegisterView() {
 
     const{ register, watch, handleSubmit, formState:{errors}} = useForm({defaultValues: initialValues})
 
-    console.log(errors)
+    const password = watch('password')
 
     const handleRegister = () => {
         console.log("Desde handleRegister")
@@ -87,6 +87,10 @@ export default function RegisterView() {
 
                         {...register('password', {
                             required: "la contraseña es obligatoria",
+                            minLength:{
+                                value:8,
+                                message: "El password debe de ser minimo de 8 caracteres"
+                            }
                         })}
                     />
 
@@ -102,7 +106,8 @@ export default function RegisterView() {
                         className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
 
                         {...register('password_confirmation', {
-                            required: "Repite la contraseña"
+                            required: "Repite la contraseña",
+                            validate: (value) => value === password || 'el password no es igual'
                         })}
                     />
 
