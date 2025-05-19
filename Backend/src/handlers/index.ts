@@ -17,14 +17,14 @@ export const createAccount = async(req : Request, res : Response) =>{
             return
         }
 
-
         const handle = slug(req.body.handle,'')
         const handleExists = await User.findOne({handle})
         if (handleExists) {
             const error = new Error("Nombre de usuario no disponible")
-
+            
             res.status(409).json({msg: error.message}) //409 es el error de conflicto, significa que ya existe un usuario con ese correo
             return
+            
         }
 
 
