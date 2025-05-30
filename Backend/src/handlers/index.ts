@@ -25,7 +25,6 @@ export const createAccount = async(req : Request, res : Response) =>{
             
             res.status(409).json({msg: error.message}) //409 es el error de conflicto, significa que ya existe un usuario con ese correo
             return
-            
         }
 
 
@@ -79,4 +78,30 @@ export const login = async(req : Request, res: Response) => {
 
 export const getUser = async(req: Request, res: Response) => {
     res.json(req.user)
+}
+
+export const updateProfile = async(req: Request, res: Response) => {
+    try {
+        const {description} = req.body //Obtenemos la descripción del body
+        
+        const handle = slug(req.body.handle,'')
+        const handleExists = await User.findOne({handle})
+        if (handleExists && handleExists.email !== req.user.email) {
+            const error = new Error("Nombre de usuario no disponible")
+            
+            res.status(409).json({msg: error.message}) //409 es el error de conflicto, significa que ya existe un usuario con ese correo
+            return
+        }
+
+        //Actualizar el usuario 
+        req.user.description = description
+        req.user.handle = handle //Asignamos el handle al usuario
+
+        await req.user.save() //Guardamos los cambios en la base de datos
+        res.send('Se actualizo el perfil correctamente') //200 es el código de éxito, significa que se actualizo el recurso
+    } catch (e) {
+        const error = new Error("Error al actualizar el perfil")
+        res.status(500).json({error: error.message}) //500 es el error interno del servidor, significa que hubo un error en el servidor
+        return
+    }
 }

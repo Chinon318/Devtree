@@ -1,11 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 
-export interface IUser{
+export interface IUser extends Document{
     handle: string,
     name : string,
     email : string,
-    password : string
+    password : string,
+    description?: string
 }
 
 
@@ -40,6 +41,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true, //Elimina los espacios en blanco al inicio y al final
+    },
+    description:{
+        type: String,
+        default: '', //Si no se proporciona, se establece como cadena vacía
     }
 })
 

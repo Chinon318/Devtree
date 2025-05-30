@@ -1,6 +1,6 @@
 import { Router } from "express"; //Permite configurar un objeto con todas las rutas
 import {body} from "express-validator";
-import { createAccount, getUser, login } from "./handlers";
+import { createAccount, getUser, login, updateProfile } from "./handlers";
 import { handleInputErrors } from "./middleware/validation";
 import { authenticate } from "./middleware/auth";
 
@@ -33,6 +33,15 @@ router.post('/auth/login',
 )
 
 router.get('/user', authenticate, getUser)
+
+router.patch('/user',
+    body('handle').notEmpty().withMessage('El nombre de usuario es obligatorio'), //Validamos que el handle no esté vacío
+
+    body('description').notEmpty().withMessage('El nombre es obligatorio'),
+
+    authenticate, 
+
+    updateProfile)
 
 
 export default router; //Exportamos el objeto router para usarlo en otros archivos
