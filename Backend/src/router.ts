@@ -1,6 +1,6 @@
 import { Router } from "express"; //Permite configurar un objeto con todas las rutas
 import {body} from "express-validator";
-import { createAccount, getUser, login, updateProfile } from "./handlers";
+import { createAccount, getUser, login, updateProfile, uploadImage } from "./handlers";
 import { handleInputErrors } from "./middleware/validation";
 import { authenticate } from "./middleware/auth";
 
@@ -41,7 +41,11 @@ router.patch('/user',
 
     authenticate, 
 
-    updateProfile)
+    updateProfile
+)
 
+
+//Subida de imagenes a cloudinary
+router.post('/user/image', authenticate, uploadImage)
 
 export default router; //Exportamos el objeto router para usarlo en otros archivos
